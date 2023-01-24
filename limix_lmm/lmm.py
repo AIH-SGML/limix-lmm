@@ -147,12 +147,12 @@ class LMM(LMMCore):
         self.beta_g += n * GKiy
 
         # sigma
-        s2 = self.yKiy - sp.einsum("i,is->s", self.FKiy[:, 0], self.beta_F)
-        s2 -= GKiy * self.beta_g
-        s2 /= self.df
+        self.s2 = self.yKiy - sp.einsum("i,is->s", self.FKiy[:, 0], self.beta_F)
+        self.s2 -= GKiy * self.beta_g
+        self.s2 /= self.df
 
         # dlml and pvs
-        self.lrt = -self.df * sp.log(s2 / self.s20)
+        self.lrt = -self.df * sp.log(self.s2 / self.s20)
         self.pv = st.chi2(1).sf(self.lrt)
 
         t1 = time()
